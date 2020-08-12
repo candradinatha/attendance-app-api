@@ -13,14 +13,14 @@ class CreateDailyAttendance extends Command
      *
      * @var string
      */
-    protected $signature = 'daily_attendance:create';
+    protected $signature = 'attendance:create';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create daily attendance table';
+    protected $description = 'Create daily attendance';
 
     /**
      * Create a new command instance.

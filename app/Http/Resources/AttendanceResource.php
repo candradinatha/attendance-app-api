@@ -14,10 +14,13 @@ class AttendanceResource extends JsonResource
      */
     public function toArray($request)
     {
-        return array_merge([
-            'check_in_at' => $this['attendance']['check_in_at'],
-            'check_out_at' => $this['attendance']['check_out_at'],
-            'created_at' => $this['attendance']['created_at']
-        ], ['user_data' => (new UserResource($this['user']))->toArray($request)]);
+        return [
+            'id' => $this['attendance']->id,
+            'check_in_at' => $this['attendance']->check_in_at,
+            'check_out_at' => $this['attendance']->check_out_at,
+            'created_at' => $this['attendance']->created_at->toDateTimeString(),
+            'all_attendance' => $this['all_attendance'],
+            'all_absent' => $this['all_absent']
+        ];
     }
 }

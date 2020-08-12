@@ -4,8 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Attendance;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\AttendanceResource;
+use App\Http\Requests\AttendanceRequest;
+
 
 
 class AttendanceController extends Controller
@@ -20,10 +23,13 @@ class AttendanceController extends Controller
         //
         $user = auth()->user();
         $attendance = Attendance::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
+        $allAbsent = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNull('check_in_at')->count();
+        $allAttendance = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNotNull('check_in_at')->count();
 
         return new AttendanceResource([
             'attendance' => $attendance,
-            'user' => $user
+            'all_attendance' => $allAttendance,
+            'all_absent' => $allAbsent
         ]);
         
     }
@@ -93,4 +99,27 @@ class AttendanceController extends Controller
     {
         //
     }
+
+    public function checkIn(Attendance $attendance)
+    {
+        $attendance->check_in_at = \Carbon\Carbon::now();
+        $allAbsent = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNull('check_in_at')->count();
+        $allAttendance = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNotNull('check_in_at')->count();
+
+        $attendance->save();
+
+        return $this->index();
+    }
+
+    public function checkOut(Attendance $attendance)
+    {
+        $attendance->check_out_at = \Carbon\Carbon::now();
+        $allAbsent = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNull('check_in_at')->count();
+        $allAttendance = Attendance::whereDate('created_at', \Carbon\Carbon::today())->whereNotNull('check_in_at')->count();
+
+        $attendance->save();
+
+        return $this->index();
+    }
+
 }

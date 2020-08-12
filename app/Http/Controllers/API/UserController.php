@@ -10,8 +10,10 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\AuthResource;
 use App\User;
+use App\Attendance;
 use GuzzleHttp\Psr7\ServerRequest;
 use Laravel\Passport\Client;
+use Artisan;
 
 class UserController extends Controller
 {
@@ -37,6 +39,10 @@ class UserController extends Controller
         $user = new User($request->all());
         $user->password = bcrypt($request->password);
         $user->save();
+
+        $attendance = new Attendance;
+        $attendance->user_id = $user->id;
+        $attendance->save();
         
         return new AuthResource([
             'access' => $this->requestTokens($request),
