@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('attendance/today', 'API\AttendanceController@index');
+    Route::get('attendance/weekly', 'API\AttendanceController@weeklyAttendance');
     Route::patch('attendance/check-in/{attendance}', 'API\AttendanceController@checkIn');
     Route::patch('attendance/check-out/{attendance}', 'API\AttendanceController@checkOut');
 });

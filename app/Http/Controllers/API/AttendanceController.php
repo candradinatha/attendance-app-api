@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\AttendanceResource;
 use App\Http\Requests\AttendanceRequest;
+use App\Http\Resources\AttendanceCollection;
 
 
 
@@ -120,6 +121,13 @@ class AttendanceController extends Controller
         $attendance->save();
 
         return $this->index();
+    }
+
+    public function weeklyAttendance() {
+        $user = auth()->user();
+        $attendance = Attendance::where('user_id', $user->id)->orderBy('created_at', 'desc')->limit(7)->get();
+        // dd($attendance);
+        return new AttendanceCollection($attendance);
     }
 
 }
