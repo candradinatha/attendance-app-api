@@ -19,10 +19,17 @@ Route::post('register', 'API\UserController@register');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('models/check-version/{version}', 'API\ModelsController@checkModelVersion');
+Route::get('models/train/download', 'API\ModelsController@downloadTrain');
+Route::get('models/label/download', 'API\ModelsController@downloadLabel');
+Route::get('models/train-model/download', 'API\ModelsController@downloadTrainModel');
+Route::get('models/version/download', 'API\ModelsController@downloadVersion');
+Route::get('attendance-instant/today/{label}', 'API\AttendanceController@getAttendanceByLabel');
+Route::patch('attendance/check-in/{attendance}', 'API\AttendanceController@checkIn');
+Route::patch('attendance/check-out/{attendance}', 'API\AttendanceController@checkOut');
 
 Route::group(['middleware' => ['auth:api']], function() {
     Route::get('attendance/today', 'API\AttendanceController@index');
-    Route::get('attendance/weekly', 'API\AttendanceController@weeklyAttendance');
-    Route::patch('attendance/check-in/{attendance}', 'API\AttendanceController@checkIn');
-    Route::patch('attendance/check-out/{attendance}', 'API\AttendanceController@checkOut');
+    Route::get('attendance/monthly', 'API\AttendanceController@monthlyAttendance');
+    Route::post('models/upload', 'API\ModelsController@store');
 });

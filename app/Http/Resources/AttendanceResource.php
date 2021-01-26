@@ -29,7 +29,8 @@ class AttendanceResource extends JsonResource
             'check_out_at' => $this['attendance']->check_out_at,
             'created_at' => $this['attendance']->created_at->toDateTimeString(),
             'all_attendance' => $this['all_attendance'],
-            'all_absent' => $this['all_absent']
+            'all_absent' => $this['all_absent'],
+            'user' => $this['user']
         ];
     }
 
